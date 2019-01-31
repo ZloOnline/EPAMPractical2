@@ -6,35 +6,62 @@ using System.Collections.Generic;
 namespace NetPractical2_task1
 {
     public class BinaryTree<T> : IEnumerable<T>
-        where T : IComparable
     {
         private BinaryTreeNode<T> _root;
-        public delegate void BinaryTreeChange(object addedValue);
-        private int _count;
+        
         public event BinaryTreeChange NodeAddedEvent;
+        public readonly IComparer<T> _customComparer;
 
-        public BinaryTree()
+        protected BinaryTree()
         {
             _root = null;
-            _count = 0;
+            Count = 0;
+            _customComparer = null;
+        }
+        protected BinaryTree(IComparer<T> comparer)
+        {
+            _root = null;
+            Count = 0;
+            _customComparer = comparer;
         }
 
-        public BinaryTree(T value)
+        public BinaryTree(T value):this()
         {
-            _root = new BinaryTreeNode<T>(value);
-            _count = 1;
+            Add(value);
         }
+        
+        public BinaryTree(T[] value):this()
+        {            
+            AddMultiple(value);
+        }
+        public BinaryTree(T value, IComparer<T> comparer) : this(comparer)
+        {
+            Add(value);
+        }
+        public BinaryTree(T[] value, IComparer<T> comparer):this(comparer)
+        {            
+            AddMultiple(value);
+        }
+        
 
         public int Count
         {
-            get
+            get;
+            private set;
+        }
+        public void AddMultiple(T[] value)
+        {
+            foreach (var node in value)
             {
-                return _count;
+                Add(node);
             }
         }
-
         public void Add(T value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException("Cant add null to tree");
+            }
             if (_root == null)
             {
                 _root = new BinaryTreeNode<T>(value);
@@ -43,16 +70,21 @@ namespace NetPractical2_task1
             {
                 Insert(_root, value);
             }
-            _count++;
+            Count++;
+            EventAddCore(value);
+        }
+       
+        public void EventAddCore(object value)
+        {
             if (NodeAddedEvent != null)
             {
-                NodeAddedEvent.Invoke(value);
+                NodeAddedEvent.Invoke(this, new BinaryTreeEventArgs { Value = value});
             }
         }
 
         public void Insert(BinaryTreeNode<T> node, T value)
         {
-            if (value.CompareTo(node.Value) < 0)
+            if (node.Compare(value, _customComparer) < 0)
             {
                 if (node.Left == null)
                 {
@@ -78,7 +110,7 @@ namespace NetPractical2_task1
         public void Reset()
         {
             _root = null;
-            _count = 0;
+            Count = 0;
         }
         protected IEnumerator<T> YieldInOrder()
         {
@@ -165,83 +197,5 @@ namespace NetPractical2_task1
         {
             return this.YieldInOrder();
         }
-    }
-    public class BinaryTreeNode<TNode>:IComparable<TNode>
-        where TNode:IComparable
-    {
-        public TNode Value { get; private set; }
-        public BinaryTreeNode<TNode> Left { get; set; }
-        public BinaryTreeNode<TNode> Right { get; set; }
-        public BinaryTreeNode(TNode value)
-        {
-            Value = value;
-        }
-        public int CompareTo(TNode other)
-        {
-            return Value.CompareTo(other);
-        }
-        
-    }
-}
-
-public class Student:IComparable
-{
-    public string Name;
-    public string Surname;
-    public string TestName;
-    private int mark;
-
-    public int Mark
-    {
-        get
-        {
-            return mark;
-        }
-        set
-        {
-            if(mark < 0 && mark >100)
-            {
-                throw new ArgumentOutOfRangeException("Invalid Mark, should be 0-100");
-            }
-            mark = value;
-        }
-    }
-
-    public int CompareTo(object other)
-    { 
-        Student _temp = other as Student;
-        if (_temp == null)
-        {
-            throw new NullReferenceException("Compared object is not student or null");
-        }
-        if (_temp.TestName != TestName)
-        {
-            throw new ArgumentException("Students should pass same tests");
-        }
-
-        if(mark == _temp.mark )
-        {
-            return 0;
-        }
-        if(mark < _temp.mark)
-        {
-            return -1;
-        } else 
-        {
-            return 1;
-        }
-    }
-
-    public override string ToString()
-    {
-        return String.Format("{0} {1} passed test {2} with {3}", Name, Surname, TestName, Mark);
-    }
-}
-static class EventHandler
-{
-    public static void PrintNodeAdded(Object addedValue)
-    {
-        Console.WriteLine(addedValue.ToString());
-        Console.WriteLine("Sucessfuly added. Congratulations!");
-    }
+    }    
 }
