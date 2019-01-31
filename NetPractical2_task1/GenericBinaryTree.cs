@@ -32,7 +32,7 @@ namespace NetPractical2_task1
         
         public BinaryTree(T[] value):this()
         {            
-            AddMultiple(value);
+            Add(value);
         }
         public BinaryTree(T value, IComparer<T> comparer) : this(comparer)
         {
@@ -40,7 +40,7 @@ namespace NetPractical2_task1
         }
         public BinaryTree(T[] value, IComparer<T> comparer):this(comparer)
         {            
-            AddMultiple(value);
+            Add(value);
         }
         
 
@@ -49,7 +49,7 @@ namespace NetPractical2_task1
             get;
             private set;
         }
-        public void AddMultiple(T[] value)
+        public void Add(T[] value)
         {
             foreach (var node in value)
             {
@@ -150,9 +150,9 @@ namespace NetPractical2_task1
         }
 
         public IEnumerable<T> Reverse
-        {
+        {            
             get
-            {
+            {                
                 if (_root != null)
                 {
                     Stack stack = new Stack();
