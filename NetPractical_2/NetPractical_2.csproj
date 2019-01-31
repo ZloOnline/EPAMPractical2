@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F16BAB19-DE3F-484D-89C7-3A6FD664275A}</ProjectGuid>
+    <ProjectGuid>{CF635DB7-8FB4-4D61-9CB3-CF5DF7AC1458}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NetPractical2_task1</RootNamespace>
-    <AssemblyName>NetPractical2_task1</AssemblyName>
+    <RootNamespace>NetPractical_2</RootNamespace>
+    <AssemblyName>NetPractical_2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericBinaryTree.cs" />
+    <Compile Include="ArrayWithOffset.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
