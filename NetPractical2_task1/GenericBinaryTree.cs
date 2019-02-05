@@ -9,7 +9,7 @@ namespace NetPractical2_task1
     {
         private BinaryTreeNode<T> _root;
         
-        public event BinaryTreeChange NodeAddedEvent;
+        public event EventHandler NodeAddedEvent;
         public readonly IComparer<T> _customComparer;
 
         public class DefaultComparer<T> : IComparer<T>           
@@ -20,7 +20,7 @@ namespace NetPractical2_task1
                 IComparable tempY = y as IComparable;
                 if (tempX == null || tempY == null)
                 {
-                   throw new ArgumentException("Value is not comparable and no comparer provided");
+                   throw new ArgumentException("DefaultComparer failed to convert value to IComparable");
                 }
                 return tempX.CompareTo(tempY);
             }
@@ -41,13 +41,21 @@ namespace NetPractical2_task1
 
         public BinaryTree(T value):this()            
         {
-            Add(value);
-
+            if (!(value is IComparable))
+            {
+                throw new ArgumentException("Value is not comparable and no comparer provided");
+            }
             _customComparer = new DefaultComparer<T>();
+            Add(value);            
         }
         
         public BinaryTree(T[] value):this()
-        {            
+        {
+            if (!(value[0] is IComparable))
+            {
+                throw new ArgumentException("Values in array are not comparable and no comparer provided");
+            }
+            _customComparer = new DefaultComparer<T>();
             Add(value);
         }
         public BinaryTree(T value, IComparer<T> comparer) : this(comparer)

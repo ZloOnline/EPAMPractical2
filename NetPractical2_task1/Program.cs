@@ -44,7 +44,7 @@ namespace NetPractical2_task1
                     Mark = 21
                 };
                 BinaryTree<Student> testTree = new BinaryTree<Student>(_testStudent1);
-                testTree.NodeAddedEvent += EventHandler.PrintNodeAdded;                
+                testTree.NodeAddedEvent += EventResponce.PrintNodeAdded;                
                 testTree.Add(_testStudent2);
                 testTree.Add(_testStudent3);
                 testTree.Add(_testStudent4);
