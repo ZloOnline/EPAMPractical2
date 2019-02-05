@@ -7,21 +7,20 @@ namespace NetPractical2_task1
     {
         public int Compare(Student first, Student other)
         {
-            Student _temp = other as Student;
-            if (_temp == null)
+            if (other == null)
             {
                 throw new NullReferenceException("Compared object is not student or null");
             }
-            if (_temp.TestName != first.TestName)
+            if (other.TestName != first.TestName)
             {
                 throw new ArgumentException("Students should pass same tests");
             }
 
-            if (first.Mark == _temp.Mark)
+            if (first.Mark == other.Mark)
             {
                 return 0;
             }
-            if (first.Mark > _temp.Mark)
+            if (first.Mark > other.Mark)
             {
                 return -1;
             }
@@ -31,7 +30,7 @@ namespace NetPractical2_task1
             }
         }
     }
-    public class Student
+    public class Student:IComparable
     {
         public string Name;
         public string Surname;
@@ -53,7 +52,32 @@ namespace NetPractical2_task1
                 mark = value;
             }
         }
-        
+
+        public int CompareTo(object obj)
+        {
+            Student _temp = obj as Student;
+            if(_temp == null)
+            {
+                throw new ArgumentException("Value is not a Student");
+            }
+            if (TestName != _temp.TestName)
+            {
+                throw new ArgumentException("Students should pass same tests");
+            }
+
+            if (Mark == _temp.Mark)
+            {
+                return 0;
+            }
+            if (Mark > _temp.Mark)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
 
         public override string ToString()
         {

@@ -14,18 +14,7 @@ namespace NetPractical2_task1
         }
         public int Compare(TNode other, IComparer<TNode> comparer)
         {
-            if (comparer != null)
-            {
-                return comparer.Compare(Value, other);
-            }
-            var c = other as IComparable;
-            if (c != null)
-            {
-                return c.CompareTo(Value);
-            } else
-            {
-                throw new ArgumentException("Value is not comparable and no comparer provided");
-            }
+            return comparer.Compare(Value, other);      
         }
     }
 }
